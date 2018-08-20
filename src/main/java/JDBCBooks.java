@@ -16,13 +16,13 @@ public class JDBCBooks {
         statement = connection.createStatement();
     }
 
-    private static void reportSQLException(SQLException sqlEx) {
+    public void reportSQLException(SQLException sqlEx) {
         System.out.println("SQLException: " + sqlEx.getMessage());
         System.out.println("SQLState: " + sqlEx.getSQLState());
         System.out.println("VendorError: " + sqlEx.getErrorCode());
     }
 
-    private void close() {
+    public void close() {
         if (connection != null) {
             try { connection.close(); } catch(SQLException se) {}
         }
@@ -61,21 +61,6 @@ public class JDBCBooks {
     public void delete(int id) throws SQLException {
         String query = "DELETE FROM books WHERE id = %d;";
         statement.executeUpdate(String.format(query, id));
-    }
-
-    public static void main(String args[]) {
-        JDBCBooks books = null;
-        try {
-            books = new JDBCBooks("jdbc:mysql://localhost:3306/db", "root", "x7p");
-            System.out.printf("Total number of books in the table : %d", books.size());
-            books.display();
-
-        } catch (SQLException sqlEx) {
-            reportSQLException(sqlEx);
-        } finally {
-            books.close();
-        }
-
     }
 
 }
